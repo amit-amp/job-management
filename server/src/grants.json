@@ -1,0 +1,362 @@
+[
+  {
+    "role": "teammate",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Organization",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Organization",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Organization",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Organization",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Organization",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Organization",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Organization",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Organization",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Organization",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Organization",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Organization",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Organization",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Organization",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Organization",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Organization",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Branch",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Branch",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Branch",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Branch",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Branch",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Branch",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Branch",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Branch",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Branch",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Branch",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Branch",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Branch",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Branch",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Branch",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Branch",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Job",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Job",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Job",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Job",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Job",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Job",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Job",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Job",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Job",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Job",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Job",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Job",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "teammate",
+    "resource": "Job",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "Job",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Job",
+    "action": "read:any",
+    "attributes": "*"
+  }
+]

@@ -18,10 +18,10 @@ export const JobCreate = (props: CreateProps): React.ReactElement => {
           source="status"
           label="status"
           choices={[
-            { label: "created", value: "Created" },
-            { label: "accepted", value: "Accepted" },
-            { label: "InProgress", value: "InProgress" },
-            { label: "completed", value: "Completed" },
+            { label: "Created", value: "Created" },
+            { label: "Accepted", value: "Accepted" },
+            { label: "In Progress", value: "InProgress" },
+            { label: "Completed", value: "Completed" },
           ]}
           optionText="label"
           allowEmpty

@@ -9,6 +9,7 @@ import {
   SelectArrayInput,
 } from "react-admin";
 
+import { OrganizationTitle } from "../organization/OrganizationTitle";
 import { UserTitle } from "../user/UserTitle";
 
 export const BranchEdit = (props: EditProps): React.ReactElement => {
@@ -16,6 +17,14 @@ export const BranchEdit = (props: EditProps): React.ReactElement => {
     <Edit {...props}>
       <SimpleForm>
         <TextInput label="name" source="name" />
+        <ReferenceArrayInput
+          source="organizations"
+          reference="Organization"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={OrganizationTitle} />
+        </ReferenceArrayInput>
         <ReferenceArrayInput
           source="users"
           reference="User"

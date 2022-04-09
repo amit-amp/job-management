@@ -13,6 +13,7 @@ import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsDate, IsString, IsOptional, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
+import { Organization } from "../../organization/base/Organization";
 import { User } from "../../user/base/User";
 @ObjectType()
 class Branch {
@@ -42,6 +43,15 @@ class Branch {
     nullable: true,
   })
   name!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Organization],
+  })
+  @ValidateNested()
+  @Type(() => Organization)
+  @IsOptional()
+  organizations?: Array<Organization>;
 
   @ApiProperty({
     required: true,

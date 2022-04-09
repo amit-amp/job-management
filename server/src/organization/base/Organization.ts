@@ -18,12 +18,12 @@ import { Type } from "class-transformer";
 class Organization {
   @ApiProperty({
     required: false,
-    type: () => Branch,
+    type: () => [Branch],
   })
   @ValidateNested()
   @Type(() => Branch)
   @IsOptional()
-  branch?: Branch | null;
+  branch?: Array<Branch>;
 
   @ApiProperty({
     required: true,

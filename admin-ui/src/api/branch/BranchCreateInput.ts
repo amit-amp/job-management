@@ -1,8 +1,8 @@
-import { OrganizationCreateNestedManyWithoutBranchesInput } from "./OrganizationCreateNestedManyWithoutBranchesInput";
+import { OrganizationWhereUniqueInput } from "../organization/OrganizationWhereUniqueInput";
 import { UserCreateNestedManyWithoutBranchesInput } from "./UserCreateNestedManyWithoutBranchesInput";
 
 export type BranchCreateInput = {
   name?: string | null;
-  organizations?: OrganizationCreateNestedManyWithoutBranchesInput;
+  organizations?: OrganizationWhereUniqueInput | null;
   users?: UserCreateNestedManyWithoutBranchesInput;
 };

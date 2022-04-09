@@ -1,8 +1,8 @@
-import { OrganizationUpdateManyWithoutBranchesInput } from "./OrganizationUpdateManyWithoutBranchesInput";
+import { OrganizationWhereUniqueInput } from "../organization/OrganizationWhereUniqueInput";
 import { UserUpdateManyWithoutBranchesInput } from "./UserUpdateManyWithoutBranchesInput";
 
 export type BranchUpdateInput = {
   name?: string | null;
-  organizations?: OrganizationUpdateManyWithoutBranchesInput;
+  organizations?: OrganizationWhereUniqueInput | null;
   users?: UserUpdateManyWithoutBranchesInput;
 };

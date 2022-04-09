@@ -1,25 +1,45 @@
 import * as React from "react";
+
 import {
   Show,
   SimpleShowLayout,
   ShowProps,
-  ReferenceField,
-  TextField,
   DateField,
+  TextField,
+  ReferenceManyField,
+  Datagrid,
+  ReferenceField,
 } from "react-admin";
-import { BRANCH_TITLE_FIELD } from "../branch/BranchTitle";
+
+import { ORGANIZATION_TITLE_FIELD } from "./OrganizationTitle";
 
 export const OrganizationShow = (props: ShowProps): React.ReactElement => {
   return (
     <Show {...props}>
       <SimpleShowLayout>
-        <ReferenceField label="branch" source="branch.id" reference="Branch">
-          <TextField source={BRANCH_TITLE_FIELD} />
-        </ReferenceField>
         <DateField source="createdAt" label="Created At" />
         <TextField label="ID" source="id" />
         <TextField label="name" source="name" />
         <DateField source="updatedAt" label="Updated At" />
+        <ReferenceManyField
+          reference="Branch"
+          target="OrganizationId"
+          label="Branches"
+        >
+          <Datagrid rowClick="show">
+            <DateField source="createdAt" label="Created At" />
+            <TextField label="ID" source="id" />
+            <TextField label="name" source="name" />
+            <ReferenceField
+              label="Organizations"
+              source="organization.id"
+              reference="Organization"
+            >
+              <TextField source={ORGANIZATION_TITLE_FIELD} />
+            </ReferenceField>
+            <DateField source="updatedAt" label="Updated At" />
+          </Datagrid>
+        </ReferenceManyField>
       </SimpleShowLayout>
     </Show>
   );

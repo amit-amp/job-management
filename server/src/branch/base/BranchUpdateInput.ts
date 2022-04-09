@@ -12,7 +12,7 @@ https://docs.amplication.com/docs/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsOptional, ValidateNested } from "class-validator";
-import { OrganizationUpdateManyWithoutBranchesInput } from "./OrganizationUpdateManyWithoutBranchesInput";
+import { OrganizationWhereUniqueInput } from "../../organization/base/OrganizationWhereUniqueInput";
 import { Type } from "class-transformer";
 import { UserUpdateManyWithoutBranchesInput } from "./UserUpdateManyWithoutBranchesInput";
 @InputType()
@@ -30,15 +30,15 @@ class BranchUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: () => OrganizationUpdateManyWithoutBranchesInput,
+    type: () => OrganizationWhereUniqueInput,
   })
   @ValidateNested()
-  @Type(() => OrganizationUpdateManyWithoutBranchesInput)
+  @Type(() => OrganizationWhereUniqueInput)
   @IsOptional()
-  @Field(() => OrganizationUpdateManyWithoutBranchesInput, {
+  @Field(() => OrganizationWhereUniqueInput, {
     nullable: true,
   })
-  organizations?: OrganizationUpdateManyWithoutBranchesInput;
+  organizations?: OrganizationWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,

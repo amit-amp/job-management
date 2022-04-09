@@ -22,8 +22,7 @@ model User {
 }
 
 model Organization {
-  branch    Branch?  @relation(fields: [branchId], references: [id])
-  branchId  String?
+  branch    Branch[]
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   name      String?
@@ -31,12 +30,13 @@ model Organization {
 }
 
 model Branch {
-  createdAt     DateTime       @default(now())
-  id            String         @id @default(cuid())
-  name          String?
-  organizations Organization[]
-  updatedAt     DateTime       @updatedAt
-  users         User[]
+  createdAt       DateTime      @default(now())
+  id              String        @id @default(cuid())
+  name            String?
+  organizations   Organization? @relation(fields: [organizationsId], references: [id])
+  organizationsId String?
+  updatedAt       DateTime      @updatedAt
+  users           User[]
 }
 
 model Job {

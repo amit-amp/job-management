@@ -25,6 +25,7 @@ import { DeleteOrganizationArgs } from "./DeleteOrganizationArgs";
 import { OrganizationFindManyArgs } from "./OrganizationFindManyArgs";
 import { OrganizationFindUniqueArgs } from "./OrganizationFindUniqueArgs";
 import { Organization } from "./Organization";
+import { BranchFindManyArgs } from "../../branch/base/BranchFindManyArgs";
 import { Branch } from "../../branch/base/Branch";
 import { OrganizationService } from "../organization.service";
 
@@ -132,15 +133,7 @@ export class OrganizationResolverBase {
     // @ts-ignore
     return await this.service.create({
       ...args,
-      data: {
-        ...args.data,
-
-        branch: args.data.branch
-          ? {
-              connect: args.data.branch,
-            }
-          : undefined,
-      },
+      data: args.data,
     });
   }
 
@@ -179,15 +172,7 @@ export class OrganizationResolverBase {
       // @ts-ignore
       return await this.service.update({
         ...args,
-        data: {
-          ...args.data,
-
-          branch: args.data.branch
-            ? {
-                connect: args.data.branch,
-              }
-            : undefined,
-        },
+        data: args.data,
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -221,7 +206,7 @@ export class OrganizationResolverBase {
     }
   }
 
-  @graphql.ResolveField(() => Branch, { nullable: true })
+  @graphql.ResolveField(() => [Branch])
   @nestAccessControl.UseRoles({
     resource: "Organization",
     action: "read",
@@ -229,19 +214,21 @@ export class OrganizationResolverBase {
   })
   async branch(
     @graphql.Parent() parent: Organization,
+    @graphql.Args() args: BranchFindManyArgs,
     @gqlUserRoles.UserRoles() userRoles: string[]
-  ): Promise<Branch | null> {
+  ): Promise<Branch[]> {
     const permission = this.rolesBuilder.permission({
       role: userRoles,
       action: "read",
       possession: "any",
       resource: "Branch",
     });
-    const result = await this.service.getBranch(parent.id);
+    const results = await this.service.findBranch(parent.id, args);
 
-    if (!result) {
-      return null;
+    if (!results) {
+      return [];
     }
-    return permission.filter(result);
+
+    return results.map((result) => permission.filter(result));
   }
 }

@@ -1,7 +1,7 @@
 import { Branch } from "../branch/Branch";
 
 export type Organization = {
-  branch?: Branch | null;
+  branch?: Array<Branch>;
   createdAt: Date;
   id: string;
   name: string | null;

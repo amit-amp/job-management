@@ -5,7 +5,7 @@ export type Branch = {
   createdAt: Date;
   id: string;
   name: string | null;
-  organizations?: Array<Organization>;
+  organizations?: Organization | null;
   updatedAt: Date;
   users?: Array<User>;
 };

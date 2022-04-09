@@ -5,6 +5,8 @@ import {
   SimpleForm,
   EditProps,
   TextInput,
+  ReferenceInput,
+  SelectInput,
   ReferenceArrayInput,
   SelectArrayInput,
 } from "react-admin";
@@ -17,14 +19,13 @@ export const BranchEdit = (props: EditProps): React.ReactElement => {
     <Edit {...props}>
       <SimpleForm>
         <TextInput label="name" source="name" />
-        <ReferenceArrayInput
-          source="organizations"
+        <ReferenceInput
+          source="organization.id"
           reference="Organization"
-          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
-          format={(value: any) => value && value.map((v: any) => v.id)}
+          label="Organizations"
         >
-          <SelectArrayInput optionText={OrganizationTitle} />
-        </ReferenceArrayInput>
+          <SelectInput optionText={OrganizationTitle} />
+        </ReferenceInput>
         <ReferenceArrayInput
           source="users"
           reference="User"

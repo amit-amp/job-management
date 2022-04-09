@@ -27,9 +27,6 @@ import { BranchWhereUniqueInput } from "./BranchWhereUniqueInput";
 import { BranchFindManyArgs } from "./BranchFindManyArgs";
 import { BranchUpdateInput } from "./BranchUpdateInput";
 import { Branch } from "./Branch";
-import { OrganizationFindManyArgs } from "../../organization/base/OrganizationFindManyArgs";
-import { Organization } from "../../organization/base/Organization";
-import { OrganizationWhereUniqueInput } from "../../organization/base/OrganizationWhereUniqueInput";
 import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
 import { User } from "../../user/base/User";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
@@ -76,11 +73,26 @@ export class BranchControllerBase {
       );
     }
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        organizations: data.organizations
+          ? {
+              connect: data.organizations,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
         id: true,
         name: true,
+
+        organizations: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -118,6 +130,13 @@ export class BranchControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        organizations: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -154,6 +173,13 @@ export class BranchControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        organizations: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -206,11 +232,26 @@ export class BranchControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          organizations: data.organizations
+            ? {
+                connect: data.organizations,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
           id: true,
           name: true,
+
+          organizations: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
@@ -248,6 +289,13 @@ export class BranchControllerBase {
           createdAt: true,
           id: true,
           name: true,
+
+          organizations: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
@@ -259,188 +307,6 @@ export class BranchControllerBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(
-    defaultAuthGuard.DefaultAuthGuard,
-    nestAccessControl.ACGuard
-  )
-  @common.Get("/:id/organizations")
-  @nestAccessControl.UseRoles({
-    resource: "Branch",
-    action: "read",
-    possession: "any",
-  })
-  @ApiNestedQuery(OrganizationFindManyArgs)
-  async findManyOrganizations(
-    @common.Req() request: Request,
-    @common.Param() params: BranchWhereUniqueInput,
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<Organization[]> {
-    const query = plainToClass(OrganizationFindManyArgs, request.query);
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "read",
-      possession: "any",
-      resource: "Organization",
-    });
-    const results = await this.service.findOrganizations(params.id, {
-      ...query,
-      select: {
-        branch: {
-          select: {
-            id: true,
-          },
-        },
-
-        createdAt: true,
-        id: true,
-        name: true,
-        updatedAt: true,
-      },
-    });
-    if (results === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
-    }
-    return results.map((result) => permission.filter(result));
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(
-    defaultAuthGuard.DefaultAuthGuard,
-    nestAccessControl.ACGuard
-  )
-  @common.Post("/:id/organizations")
-  @nestAccessControl.UseRoles({
-    resource: "Branch",
-    action: "update",
-    possession: "any",
-  })
-  async createOrganizations(
-    @common.Param() params: BranchWhereUniqueInput,
-    @common.Body() body: BranchWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      organizations: {
-        connect: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Branch",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Branch"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(
-    defaultAuthGuard.DefaultAuthGuard,
-    nestAccessControl.ACGuard
-  )
-  @common.Patch("/:id/organizations")
-  @nestAccessControl.UseRoles({
-    resource: "Branch",
-    action: "update",
-    possession: "any",
-  })
-  async updateOrganizations(
-    @common.Param() params: BranchWhereUniqueInput,
-    @common.Body() body: OrganizationWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      organizations: {
-        set: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Branch",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Branch"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
-  @common.UseGuards(
-    defaultAuthGuard.DefaultAuthGuard,
-    nestAccessControl.ACGuard
-  )
-  @common.Delete("/:id/organizations")
-  @nestAccessControl.UseRoles({
-    resource: "Branch",
-    action: "update",
-    possession: "any",
-  })
-  async deleteOrganizations(
-    @common.Param() params: BranchWhereUniqueInput,
-    @common.Body() body: BranchWhereUniqueInput[],
-    @nestAccessControl.UserRoles() userRoles: string[]
-  ): Promise<void> {
-    const data = {
-      organizations: {
-        disconnect: body,
-      },
-    };
-    const permission = this.rolesBuilder.permission({
-      role: userRoles,
-      action: "update",
-      possession: "any",
-      resource: "Branch",
-    });
-    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
-    if (invalidAttributes.length) {
-      const roles = userRoles
-        .map((role: string) => JSON.stringify(role))
-        .join(",");
-      throw new common.ForbiddenException(
-        `Updating the relationship: ${
-          invalidAttributes[0]
-        } of ${"Branch"} is forbidden for roles: ${roles}`
-      );
-    }
-    await this.service.update({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 
   @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))

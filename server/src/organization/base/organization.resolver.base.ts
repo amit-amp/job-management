@@ -25,6 +25,7 @@ import { DeleteOrganizationArgs } from "./DeleteOrganizationArgs";
 import { OrganizationFindManyArgs } from "./OrganizationFindManyArgs";
 import { OrganizationFindUniqueArgs } from "./OrganizationFindUniqueArgs";
 import { Organization } from "./Organization";
+import { Branch } from "../../branch/base/Branch";
 import { OrganizationService } from "../organization.service";
 
 @graphql.Resolver(() => Organization)
@@ -131,7 +132,15 @@ export class OrganizationResolverBase {
     // @ts-ignore
     return await this.service.create({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        branch: args.data.branch
+          ? {
+              connect: args.data.branch,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -170,7 +179,15 @@ export class OrganizationResolverBase {
       // @ts-ignore
       return await this.service.update({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          branch: args.data.branch
+            ? {
+                connect: args.data.branch,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -202,5 +219,29 @@ export class OrganizationResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => Branch, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Organization",
+    action: "read",
+    possession: "any",
+  })
+  async branch(
+    @graphql.Parent() parent: Organization,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Branch | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Branch",
+    });
+    const result = await this.service.getBranch(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return permission.filter(result);
   }
 }

@@ -15,6 +15,7 @@ import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { OrganizationListRelationFilter } from "../../organization/base/OrganizationListRelationFilter";
 import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
 @InputType()
 class BranchWhereInput {
@@ -39,6 +40,18 @@ class BranchWhereInput {
     nullable: true,
   })
   name?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => OrganizationListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => OrganizationListRelationFilter)
+  @IsOptional()
+  @Field(() => OrganizationListRelationFilter, {
+    nullable: true,
+  })
+  organizations?: OrganizationListRelationFilter;
 
   @ApiProperty({
     required: false,

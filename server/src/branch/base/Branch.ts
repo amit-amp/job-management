@@ -46,12 +46,12 @@ class Branch {
 
   @ApiProperty({
     required: false,
-    type: () => [Organization],
+    type: () => Organization,
   })
   @ValidateNested()
   @Type(() => Organization)
   @IsOptional()
-  organizations?: Array<Organization>;
+  organizations?: Organization | null;
 
   @ApiProperty({
     required: true,

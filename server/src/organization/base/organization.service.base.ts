@@ -47,11 +47,14 @@ export class OrganizationServiceBase {
     return this.prisma.organization.delete(args);
   }
 
-  async getBranch(parentId: string): Promise<Branch | null> {
+  async findBranch(
+    parentId: string,
+    args: Prisma.BranchFindManyArgs
+  ): Promise<Branch[]> {
     return this.prisma.organization
       .findUnique({
         where: { id: parentId },
       })
-      .branch();
+      .branch(args);
   }
 }

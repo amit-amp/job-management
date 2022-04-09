@@ -52,6 +52,15 @@ class BranchOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
+  organizationsId?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
   updatedAt?: SortOrder;
 }
 

@@ -1,6 +1,6 @@
-import { BranchWhereUniqueInput } from "../branch/BranchWhereUniqueInput";
+import { BranchCreateNestedManyWithoutOrganizationsInput } from "./BranchCreateNestedManyWithoutOrganizationsInput";
 
 export type OrganizationCreateInput = {
-  branch?: BranchWhereUniqueInput | null;
+  branch?: BranchCreateNestedManyWithoutOrganizationsInput;
   name?: string | null;
 };

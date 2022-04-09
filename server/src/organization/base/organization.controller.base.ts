@@ -70,8 +70,22 @@ export class OrganizationControllerBase {
       );
     }
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        branch: data.branch
+          ? {
+              connect: data.branch,
+            }
+          : undefined,
+      },
       select: {
+        branch: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
         id: true,
         name: true,
@@ -109,6 +123,12 @@ export class OrganizationControllerBase {
     const results = await this.service.findMany({
       ...args,
       select: {
+        branch: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
         id: true,
         name: true,
@@ -145,6 +165,12 @@ export class OrganizationControllerBase {
     const result = await this.service.findOne({
       where: params,
       select: {
+        branch: {
+          select: {
+            id: true,
+          },
+        },
+
         createdAt: true,
         id: true,
         name: true,
@@ -200,8 +226,22 @@ export class OrganizationControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          branch: data.branch
+            ? {
+                connect: data.branch,
+              }
+            : undefined,
+        },
         select: {
+          branch: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
           id: true,
           name: true,
@@ -239,6 +279,12 @@ export class OrganizationControllerBase {
       return await this.service.delete({
         where: params,
         select: {
+          branch: {
+            select: {
+              id: true,
+            },
+          },
+
           createdAt: true,
           id: true,
           name: true,

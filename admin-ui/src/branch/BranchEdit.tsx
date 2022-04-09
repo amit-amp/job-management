@@ -5,10 +5,13 @@ import {
   SimpleForm,
   EditProps,
   TextInput,
+  ReferenceInput,
+  SelectInput,
   ReferenceArrayInput,
   SelectArrayInput,
 } from "react-admin";
 
+import { OrganizationTitle } from "../organization/OrganizationTitle";
 import { UserTitle } from "../user/UserTitle";
 
 export const BranchEdit = (props: EditProps): React.ReactElement => {
@@ -16,6 +19,13 @@ export const BranchEdit = (props: EditProps): React.ReactElement => {
     <Edit {...props}>
       <SimpleForm>
         <TextInput label="name" source="name" />
+        <ReferenceInput
+          source="organization.id"
+          reference="Organization"
+          label="Organizations"
+        >
+          <SelectInput optionText={OrganizationTitle} />
+        </ReferenceInput>
         <ReferenceArrayInput
           source="users"
           reference="User"

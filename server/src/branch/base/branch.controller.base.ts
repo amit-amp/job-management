@@ -73,11 +73,26 @@ export class BranchControllerBase {
       );
     }
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        organizations: data.organizations
+          ? {
+              connect: data.organizations,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
         id: true,
         name: true,
+
+        organizations: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -115,6 +130,13 @@ export class BranchControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        organizations: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -151,6 +173,13 @@ export class BranchControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        organizations: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -203,11 +232,26 @@ export class BranchControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          organizations: data.organizations
+            ? {
+                connect: data.organizations,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
           id: true,
           name: true,
+
+          organizations: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
@@ -245,6 +289,13 @@ export class BranchControllerBase {
           createdAt: true,
           id: true,
           name: true,
+
+          organizations: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });

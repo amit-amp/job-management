@@ -5,10 +5,13 @@ import {
   SimpleForm,
   CreateProps,
   TextInput,
+  ReferenceInput,
+  SelectInput,
   ReferenceArrayInput,
   SelectArrayInput,
 } from "react-admin";
 
+import { OrganizationTitle } from "../organization/OrganizationTitle";
 import { UserTitle } from "../user/UserTitle";
 
 export const BranchCreate = (props: CreateProps): React.ReactElement => {
@@ -16,6 +19,13 @@ export const BranchCreate = (props: CreateProps): React.ReactElement => {
     <Create {...props}>
       <SimpleForm>
         <TextInput label="name" source="name" />
+        <ReferenceInput
+          source="organization.id"
+          reference="Organization"
+          label="Organizations"
+        >
+          <SelectInput optionText={OrganizationTitle} />
+        </ReferenceInput>
         <ReferenceArrayInput
           source="users"
           reference="User"

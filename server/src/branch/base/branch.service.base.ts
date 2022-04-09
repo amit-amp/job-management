@@ -10,7 +10,7 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "nestjs-prisma";
-import { Prisma, Branch, User } from "@prisma/client";
+import { Prisma, Branch, User, Organization } from "@prisma/client";
 
 export class BranchServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -56,5 +56,13 @@ export class BranchServiceBase {
         where: { id: parentId },
       })
       .users(args);
+  }
+
+  async getOrganizations(parentId: string): Promise<Organization | null> {
+    return this.prisma.branch
+      .findUnique({
+        where: { id: parentId },
+      })
+      .organizations();
   }
 }

@@ -10,58 +10,35 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
+import { BranchWhereUniqueInput } from "../../branch/base/BranchWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
-import { SortOrder } from "../../util/SortOrder";
-
-@InputType({
-  isAbstract: true,
-  description: undefined,
-})
-class BranchOrderByInput {
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @Field(() => SortOrder, {
+@InputType()
+class BranchUpdateManyWithoutOrganizationsInput {
+  @Field(() => [BranchWhereUniqueInput], {
     nullable: true,
   })
-  createdAt?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [BranchWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
+  connect?: Array<BranchWhereUniqueInput>;
+
+  @Field(() => [BranchWhereUniqueInput], {
     nullable: true,
   })
-  id?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [BranchWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
+  disconnect?: Array<BranchWhereUniqueInput>;
+
+  @Field(() => [BranchWhereUniqueInput], {
     nullable: true,
   })
-  name?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [BranchWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  organizationsId?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  updatedAt?: SortOrder;
+  set?: Array<BranchWhereUniqueInput>;
 }
-
-export { BranchOrderByInput };
+export { BranchUpdateManyWithoutOrganizationsInput };

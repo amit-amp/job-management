@@ -1,0 +1,236 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                     String               @id @default(cuid())
+  name                   String?
+  email                  String?              @unique
+  emailVerified          DateTime?
+  image                  String?
+  hasCompletedOnboarding Boolean              @default(false)
+  profession             String?
+  technologies           Json?
+  experienceLevelFlags   Int?
+  experienceLevelTests   Int?
+  projects               ProjectUser[]
+  invites                ProjectInvite[]
+  featureFlagHistory     FeatureFlagHistory[]
+  couponCodes            CouponCode[]
+  apiKeys                ApiKey[]
+}
+
+model Project {
+  id                   String          @id @default(cuid())
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  name                 String
+  stripeCustomerId     String?         @unique
+  stripeSubscriptionId String?         @unique
+  stripePriceId        String?
+  currentPeriodEnd     DateTime        @default(dbgenerated("(CURRENT_TIMESTAMP(3) + INTERVAL 30 DAY)"))
+  users                ProjectUser[]
+  invites              ProjectInvite[]
+  tests                Test[]
+  featureFlags         FeatureFlag[]
+  apiRequests          ApiRequest[]
+}
+
+model ProjectUser {
+  id        String              @id @default(cuid())
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+  user      User                @relation(fields: [userId], references: [id])
+  userId    String
+  project   Project             @relation(fields: [projectId], references: [id])
+  projectId String
+  role      EnumProjectUserRole @default(USER)
+
+  @@unique([userId, projectId])
+  @@index([userId])
+  @@index([projectId])
+}
+
+model ProjectInvite {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String
+  project   Project   @relation(fields: [projectId], references: [id])
+  projectId String
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+  usedAt    DateTime?
+
+  @@unique([projectId, email])
+  @@index([projectId])
+  @@index([userId])
+}
+
+model Test {
+  id        String   @id @default(cuid())
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  options   Option[]
+  events    Event[]
+
+  @@unique([projectId, name])
+  @@index([projectId])
+}
+
+model Option {
+  id         String  @id @default(cuid())
+  identifier String
+  chance     Decimal
+  test       Test    @relation(fields: [testId], references: [id])
+  testId     String
+
+  @@unique([testId, identifier])
+}
+
+model Event {
+  id              String   @id @default(cuid())
+  test            Test     @relation(fields: [testId], references: [id])
+  testId          String
+  typeField       Int      @map("type")
+  selectedVariant String
+  createdAt       DateTime @default(now())
+
+  @@index([testId])
+  @@index([typeField])
+  @@index([selectedVariant])
+}
+
+model FeatureFlag {
+  id          String              @id @default(cuid())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  name        String
+  project     Project             @relation(fields: [projectId], references: [id])
+  projectId   String
+  description String?             @db.Text
+  type        EnumFeatureFlagType @default(BOOLEAN)
+  values      FeatureFlagValue[]
+
+  @@unique([projectId, name])
+  @@index([projectId])
+}
+
+model FeatureFlagValue {
+  id            String               @id @unique @default(cuid())
+  flag          FeatureFlag          @relation(fields: [flagId], references: [id])
+  flagId        String
+  value         String               @db.LongText
+  history       FeatureFlagHistory[]
+  environmentId String?
+
+  @@index([flagId])
+  @@index([environmentId])
+  @@map("FlagValue")
+}
+
+model FeatureFlagHistory {
+  id          String           @id @default(cuid())
+  createdAt   DateTime         @default(now())
+  oldValue    String?          @db.LongText
+  newValue    String?          @db.LongText
+  user        User             @relation(fields: [userId], references: [id])
+  userId      String
+  flagValue   FeatureFlagValue @relation(fields: [flagValueId], references: [id])
+  flagValueId String
+
+  @@index([flagValueId])
+  @@index([userId])
+}
+
+model CouponCode {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  code          String    @unique @default(cuid())
+  stripePriceId String
+  redeemedAt    DateTime?
+  redeemedBy    User?     @relation(fields: [redeemedById], references: [id])
+  redeemedById  String?
+
+  @@index([redeemedById])
+  @@map("CouponCodes")
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  name       String
+  hashedKey  String    @unique
+  validUntil DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+
+  @@index([userId])
+}
+
+model ApiRequest {
+  id           String                   @id @default(cuid())
+  createdAt    DateTime                 @default(now())
+  type         EnumApiRequestType
+  durationInMs Int
+  apiVersion   EnumApiRequestApiVersion @default(V0)
+  project      Project                  @relation(fields: [projectId], references: [id])
+  projectId    String
+
+  @@index([projectId])
+}
+
+model Order {
+  id         String    @id @default(cuid())
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+  quantity   Int?
+  discount   Float?
+  totalPrice Int?
+  customerId String?
+  product    Product?  @relation(fields: [productId], references: [id])
+  productId  String?
+}
+
+model Product {
+  orders      Order[]
+  id          String    @id @default(cuid())
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  name        String?
+  itemPrice   Float?
+  description String?
+}
+
+enum EnumProjectUserRole {
+  ADMIN
+  USER
+}
+
+enum EnumFeatureFlagType {
+  BOOLEAN
+  STRING
+  NUMBER
+  JSON
+}
+
+enum EnumApiRequestType {
+  GET_CONFIG
+  GET_CONFIG_SCRIPT
+  TRACK_VIEW
+}
+
+enum EnumApiRequestApiVersion {
+  V0
+  V1
+}

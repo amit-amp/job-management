@@ -1,36 +1,28 @@
 import { Module } from "@nestjs/common";
-import { UserModule } from "./user/user.module";
-import { OrganizationModule } from "./organization/organization.module";
-import { BranchModule } from "./branch/branch.module";
-import { JobModule } from "./job/job.module";
-import { ACLModule } from "./auth/acl.module";
-import { AuthModule } from "./auth/auth.module";
+import { EnvironmentModule } from "./environment/environment.module";
 import { HealthModule } from "./health/health.module";
+import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
-import { MorganModule } from "nest-morgan";
-import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { ServeStaticOptionsService } from "./serveStaticOptions.service";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 
 @Module({
   controllers: [],
   imports: [
-    UserModule,
-    OrganizationModule,
-    BranchModule,
-    JobModule,
-    ACLModule,
-    AuthModule,
+    EnvironmentModule,
     HealthModule,
+    PrismaModule,
     SecretsManagerModule,
-    MorganModule,
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRootAsync({
       useClass: ServeStaticOptionsService,
     }),
-    GraphQLModule.forRootAsync({
-      useFactory: (configService) => {
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useFactory: (configService: ConfigService) => {
         const playground = configService.get("GRAPHQL_PLAYGROUND");
         const introspection = configService.get("GRAPHQL_INTROSPECTION");
         return {

@@ -1,58 +1,21 @@
-datasource postgres {
+datasource db {
   provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+  url      = env("DB_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  branch    Branch?  @relation(fields: [branchId], references: [id])
-  branchId  String?
-  createdAt DateTime @default(now())
-  firstName String?
-  id        String   @id @default(cuid())
-  jobs      Job[]
-  lastName  String?
-  password  String
-  roles     String[]
-  updatedAt DateTime @updatedAt
-  username  String   @unique
-}
-
-model Organization {
-  branch    Branch[]
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
+model Environment {
+  id        String    @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
   name      String?
-  updatedAt DateTime @updatedAt
-}
+  projectId String?
+  sortIndex Int?
 
-model Branch {
-  createdAt       DateTime      @default(now())
-  id              String        @id @default(cuid())
-  name            String?
-  organizations   Organization? @relation(fields: [organizationsId], references: [id])
-  organizationsId String?
-  updatedAt       DateTime      @updatedAt
-  users           User[]
-}
-
-model Job {
-  createdAt   DateTime       @default(now())
-  description String?
-  id          String         @id @default(cuid())
-  status      EnumJobStatus?
-  title       String?
-  updatedAt   DateTime       @updatedAt
-  user        User?          @relation(fields: [userId], references: [id])
-  userId      String?
-}
-
-enum EnumJobStatus {
-  Created
-  Accepted
-  InProgress
-  Completed
+  @@unique([projectId, name])
+  @@index([projectId])
+  @@index([projectId, name])
 }
